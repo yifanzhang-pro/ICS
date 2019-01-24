@@ -1,0 +1,81 @@
+Demonstrate basic operation of pxydrive:
+
+1. Basic Operation
+
+Run with regular proxy:
+
+Fetch
+
+   pxy/pxydrive.py -p ./proxy-ref -f s01-basic-fetch.cmd
+
+* Examine file source_files/random/data1.txt
+* What was port number of server?
+* Understand request
+  GET command
+  Host header
+  Other headers
+* Understand what result of trace command is.
+  Request from client to proxy
+  Request from proxy to server
+  Response by server to proxy
+  Response by proxy to client
+
+Request/Respond
+
+   pxy/pxydrive.py -p ./proxy-ref -f s02-basic-request.cmd
+
+* Why did two traces produced different results?
+  In first, only completed request portion of transaction
+
+2. Detecting faulty data
+
+Run defective proxy (proxy-corrupt)
+
+   pxy/pxydrive.py -p ./proxy-corrupt -f s01-basic-fetch.cmd
+
+* Try:Examine file 
+  diff source_files/random/data1.txt response_files/r1-data1.txt
+* Did trace appear abnormal?
+* What error was detected?
+
+3. Compliance with specification
+
+Run noncompliant proxy (proxy-strip)
+
+   pxy/pxydrive.py -p ./proxy-strip -f s01-basic-fetch.cmd
+
+* Which header(s) are missing?
+
+Rerun with strictness level of 3 (-S 3)
+
+   pxy/pxydrive.py -p ./proxy-strip -f s01-basic-fetch.cmd -S 3
+
+* What was error message?
+
+4. Debugging when proxy segfaults
+
+Run proxy that can have buffer overrun (proxy-overrun
+
+   pxy/pxydrive.py -p ./proxy-overrun -f s03-overrun.cmd
+
+What was error message?  Any ideas on what happened
+
+Set up as external proxy (choose your own port)
+
+   Window #1
+   gdb ./proxy-overrun 
+   run 15213 
+
+   Window #2
+   pxy/pxydrive.py -P localhost:15213 -f s03-overrun.cmd
+
+* What happens in GDB window?
+* In what function did segfault occur?
+  (Recall that when overrun buffer, can get errors in unexpected
+  places.  This example just illustrates how to make use of GDB when
+  running pxydrive)
+* How large an object was proxy trying to save to cache?
+
+
+
+
