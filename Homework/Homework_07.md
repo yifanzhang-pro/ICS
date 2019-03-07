@@ -207,4 +207,4 @@ Wait for SIGINT...
 
 
 
-![](D:\Study IV\ICS\Homework\ICS_HW_7_2.png)
+![](ICS_HW_7_2.png)
